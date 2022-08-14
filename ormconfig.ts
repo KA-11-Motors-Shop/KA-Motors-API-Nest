@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
-import {Anuncio} from './src/anuncios/entities/anuncio.entity'
+import { Anuncio } from './src/anuncios/entities/anuncio.entity';
+import { Imagem } from './src/imagens/entities/imagen.entity';
 
 config();
 
@@ -9,7 +10,7 @@ export const AppDataSource =
     ? new DataSource({
         type: 'sqlite',
         database: 'test.sqlite',
-        entities: [Anuncio],
+        entities: [Anuncio, Imagem],
         migrations: ['dist/src/migrations/*.js'],
         migrationsTableName: 'migrations',
         synchronize: true,
@@ -22,7 +23,7 @@ export const AppDataSource =
           process.env.NODE_ENV == 'production'
             ? process.env.DATABASE_URL
             : process.env.DATABASE_TEST,
-        entities: [Anuncio],
+        entities: [Anuncio, Imagem],
         migrations: ['dist/src/migrations/*.js'],
         ssl:
           process.env.NODE_ENV === 'production'
