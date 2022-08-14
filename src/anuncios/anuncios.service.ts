@@ -4,15 +4,34 @@ import { UpdateAnuncioDto } from './dto/update-anuncio.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Anuncio } from './entities/anuncio.entity';
 import { Repository } from 'typeorm';
+import { Imagem } from '../imagens/entities/imagen.entity';
 @Injectable()
 export class AnunciosService {
   constructor(
     @InjectRepository(Anuncio) private anuncioRepo: Repository<Anuncio>,
+    @InjectRepository(Imagem) private imagemRepo: Repository<Imagem>,
   ) {}
-  create(createAnuncioDto: CreateAnuncioDto) {
+  async create(createAnuncioDto: CreateAnuncioDto) {
     console.log(createAnuncioDto);
-    const photos = delete createAnuncioDto.photos;
+    const photos = createAnuncioDto.photos;
+    delete createAnuncioDto.photos
     const anuncio = this.anuncioRepo.create(createAnuncioDto);
+   
+    let anuncioPhotos : Imagem[] = []
+    if(photos.length > 1) {
+      for(let link of photos) {
+        const photo = new Imagem()
+        photo.link = link
+
+        const imagem = this.imagemRepo.create(photo)
+        
+        await this.imagemRepo.save(imagem)
+
+        anuncioPhotos.push(imagem)
+        this.imagemRepo.save(imagem)
+      }
+    }
+    anuncio.imagens = anuncioPhotos
 
     return this.anuncioRepo.save(anuncio);
   }
@@ -50,6 +69,6 @@ export class AnunciosService {
     }
 
     this.anuncioRepo.remove(anuncio);
-    return 
+    return;
   }
 }
