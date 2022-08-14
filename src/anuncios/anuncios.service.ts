@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAnuncioDto } from './dto/create-anuncio.dto';
 import { UpdateAnuncioDto } from './dto/update-anuncio.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,26 +10,46 @@ export class AnunciosService {
     @InjectRepository(Anuncio) private anuncioRepo: Repository<Anuncio>,
   ) {}
   create(createAnuncioDto: CreateAnuncioDto) {
-    console.log(createAnuncioDto)
-    const photos = delete createAnuncioDto.photos
-    const anuncio = this.anuncioRepo.create(createAnuncioDto)
+    console.log(createAnuncioDto);
+    const photos = delete createAnuncioDto.photos;
+    const anuncio = this.anuncioRepo.create(createAnuncioDto);
 
-    return this.anuncioRepo.save(anuncio) 
+    return this.anuncioRepo.save(anuncio);
   }
 
   findAll() {
-    return `This action returns all anuncios`;
+    return this.anuncioRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} anuncio`;
+  async findOne(id: string) {
+    const anuncio = await this.anuncioRepo.findOneBy({ id });
+
+    if (!anuncio) {
+      throw new NotFoundException('id not found');
+    }
+    return anuncio;
   }
 
-  update(id: number, updateAnuncioDto: UpdateAnuncioDto) {
-    return `This action updates a #${id} anuncio`;
+  async update(id: string, updateAnuncioDto: UpdateAnuncioDto) {
+    const anuncio = await this.anuncioRepo.findOneBy({ id });
+
+    if (!anuncio) {
+      throw new NotFoundException('anuncio do not exist');
+    }
+
+    let updatedAnuncio = { ...anuncio, ...updateAnuncioDto };
+
+    return this.anuncioRepo.save(updatedAnuncio);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} anuncio`;
+  async remove(id: string) {
+    const anuncio = await this.anuncioRepo.findOneBy({ id });
+
+    if (!anuncio) {
+      throw new NotFoundException('anuncio not found');
+    }
+
+    this.anuncioRepo.remove(anuncio);
+    return 
   }
 }
