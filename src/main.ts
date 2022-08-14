@@ -7,7 +7,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Kenzie Motors Api')
-    .setDescription('api do projeto kenzie Motors')
+    .setDescription('api do projeto kenzie Motors.')
     .setVersion('1.0')
     .build();
 
