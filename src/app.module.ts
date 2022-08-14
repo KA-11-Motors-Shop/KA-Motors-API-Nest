@@ -5,8 +5,13 @@ import { AnunciosModule } from './anuncios/anuncios.module';
 import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource } from '../ormconfig';
+import { ImagensModule } from './imagens/imagens.module';
 @Module({
-  imports: [TypeOrmModule.forRoot(AppDataSource.options), AnunciosModule],
+  imports: [
+    TypeOrmModule.forRoot(AppDataSource.options),
+    AnunciosModule,
+    ImagensModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

@@ -4,7 +4,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Imagem } from '../../imagens/entities/imagen.entity';
 
 @Entity()
 export class Anuncio {
@@ -46,4 +48,7 @@ export class Anuncio {
     type: 'timestamp',
   })
   updatedAt: Date;
+
+  @OneToMany(() => Imagem, (imagem) => imagem.anuncio,{eager: true})
+  imagens: Imagem[];
 }
