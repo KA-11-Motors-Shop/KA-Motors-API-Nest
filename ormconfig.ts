@@ -20,7 +20,8 @@ export const AppDataSource =
     : new DataSource({
         type: 'postgres',
         url:
-          process.env.NODE_ENV == 'production'
+          process.env.NODE_ENV == 'production' ||
+          process.env.NODE_ENV == 'migration'
             ? process.env.DATABASE_URL
             : process.env.DATABASE_TEST,
         entities: [Anuncio, Imagem],
