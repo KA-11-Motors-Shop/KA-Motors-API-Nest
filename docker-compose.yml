@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14.5
+    container_name: pg
+    ports:
+      - 5433:5432
+    env_file:
+      - .env
+
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready
+      interval: 1s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  web:
+    container_name: web
+    build: .
+    env_file:
+      - .env
+    command: yarn start:dev
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
