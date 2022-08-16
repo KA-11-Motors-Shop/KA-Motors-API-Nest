@@ -12,7 +12,7 @@ export class AnunciosService {
     @InjectRepository(Imagem) private imagemRepo: Repository<Imagem>,
   ) {}
   async create(createAnuncioDto: CreateAnuncioDto) {
-    console.log(createAnuncioDto);
+    
     const photos = createAnuncioDto.photos;
     delete createAnuncioDto.photos
     const anuncio = this.anuncioRepo.create(createAnuncioDto);
@@ -28,7 +28,6 @@ export class AnunciosService {
         await this.imagemRepo.save(imagem)
 
         anuncioPhotos.push(imagem)
-        this.imagemRepo.save(imagem)
       }
     }
     anuncio.imagens = anuncioPhotos

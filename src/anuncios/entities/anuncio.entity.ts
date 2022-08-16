@@ -16,7 +16,7 @@ export class Anuncio {
   @Column({ type: 'varchar', width: 256 })
   titulo: string;
 
-  @Column({ type: 'varchar', width: 256 })
+  @Column({ type: 'integer' })
   preco: number;
 
   @Column({ type: 'integer' })
@@ -25,7 +25,7 @@ export class Anuncio {
   @Column({ type: 'varchar', width: 256 })
   categoria: string;
 
-  @Column({ type: 'int', width: 256 })
+  @Column({ type: 'int' })
   quilometragem: number;
 
   @Column({ type: 'text', width: 256 })
@@ -34,21 +34,19 @@ export class Anuncio {
   @Column({ type: 'varchar', width: 256 })
   tipo: string;
 
-  @Column({ type: 'bool' })
+  @Column({ type: 'boolean' })
   publicado: boolean;
 
   @CreateDateColumn({
     name: 'created_at',
-    type: 'timestamp',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
-    type: 'timestamp',
   })
   updatedAt: Date;
 
-  @OneToMany(() => Imagem, (imagem) => imagem.anuncio,{eager: true})
+  @OneToMany(() => Imagem, (imagem) => imagem.anuncio, { eager: true })
   imagens: Imagem[];
 }
