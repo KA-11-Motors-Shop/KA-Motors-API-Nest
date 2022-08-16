@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - develop
+      - main
+  pull_request:
+    branches: 
+      - develop
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node
+
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: run tests unity tests
+        run: yarn test
+        
+      - name: run e2e tests
+        run: yarn test:e2e
