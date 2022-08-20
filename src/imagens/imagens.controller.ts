@@ -8,28 +8,28 @@ import { ApiTags } from '@nestjs/swagger';
 export class ImagensController {
   constructor(private readonly imagensService: ImagensService) {}
 
-  @Post()
-  create(@Body() createImagenDto: CreateImagenDto) {
-    return this.imagensService.create(createImagenDto);
-  }
+  // @Post()
+  // create(@Body() createImagenDto: CreateImagenDto) {
+  //   return this.imagensService.create(createImagenDto);
+  // }
 
-  @Get()
-  findAll() {
-    return this.imagensService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.imagensService.findAll();
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.imagensService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.imagensService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateImagenDto: UpdateImagenDto) {
-    return this.imagensService.update(+id, updateImagenDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateImagenDto: UpdateImagenDto) {
+  //   return this.imagensService.update(+id, updateImagenDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.imagensService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.imagensService.remove(+id);
+  // }
 }
