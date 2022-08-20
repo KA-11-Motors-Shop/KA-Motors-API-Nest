@@ -6,11 +6,15 @@ import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource } from '../ormconfig';
 import { ImagensModule } from './imagens/imagens.module';
+import { UsersModule } from './users/users.module';
+import { EnderecosModule } from './enderecos/enderecos.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(AppDataSource.options),
     AnunciosModule,
     ImagensModule,
+    UsersModule,
+    EnderecosModule,
   ],
   controllers: [AppController],
   providers: [
