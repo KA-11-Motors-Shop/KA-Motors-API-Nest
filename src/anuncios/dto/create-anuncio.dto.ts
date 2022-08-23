@@ -10,6 +10,7 @@ import {
   IsEnum,
   IsNumber,
   IsInt,
+  IsUUID
 } from 'class-validator';
 
 enum Categoria {
