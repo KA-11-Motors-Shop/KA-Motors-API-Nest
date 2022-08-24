@@ -5,33 +5,35 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Anuncio } from './entities/anuncio.entity';
 import { Repository } from 'typeorm';
 import { Imagem } from '../imagens/entities/imagen.entity';
+import { User } from '../users/entities/user.entity';
 @Injectable()
 export class AnunciosService {
   constructor(
     @InjectRepository(Anuncio) private anuncioRepo: Repository<Anuncio>,
     @InjectRepository(Imagem) private imagemRepo: Repository<Imagem>,
+    @InjectRepository(User) private userRepo: Repository<User>,
   ) {}
-  async create(createAnuncioDto: CreateAnuncioDto) {
-    
+  async create(createAnuncioDto: CreateAnuncioDto, user: User) {
     const photos = createAnuncioDto.photos;
-    delete createAnuncioDto.photos
+    delete createAnuncioDto.photos;
     const anuncio = this.anuncioRepo.create(createAnuncioDto);
-   
-    let anuncioPhotos : Imagem[] = []
-    if(photos.length > 1) {
-      for(let link of photos) {
-        const photo = new Imagem()
-        photo.link = link
+ 
 
-        const imagem = this.imagemRepo.create(photo)
-        
-        await this.imagemRepo.save(imagem)
+    let anuncioPhotos: Imagem[] = [];
+    if (photos.length > 1) {
+      for (let link of photos) {
+        const photo = new Imagem();
+        photo.link = link;
 
-        anuncioPhotos.push(imagem)
+        const imagem = this.imagemRepo.create(photo);
+
+        await this.imagemRepo.save(imagem);
+
+        anuncioPhotos.push(imagem);
       }
     }
-    anuncio.imagens = anuncioPhotos
-
+    anuncio.imagens = anuncioPhotos;
+    anuncio.seller = user;
     return this.anuncioRepo.save(anuncio);
   }
 

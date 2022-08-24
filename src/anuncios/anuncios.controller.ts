@@ -12,6 +12,9 @@ import { CreateAnuncioDto } from './dto/create-anuncio.dto';
 import { UpdateAnuncioDto } from './dto/update-anuncio.dto';
 import { ApiOkResponse, ApiCreatedResponse, ApiTags,  } from '@nestjs/swagger';
 import { AnuncioDto } from './dto/anuncio-dto';
+import { User } from '../users/entities/user.entity';
+import { CurrentUser } from '../users/decorators/current-user.decorator'
+import { Serializer } from '../interceptors/serializer.interceptor';
 
 @Controller('anuncios')
 @ApiTags('Anuncios')
@@ -19,9 +22,10 @@ export class AnunciosController {
   constructor(private readonly anunciosService: AnunciosService) {}
 
   @Post()
+  @Serializer(AnuncioDto)
   @ApiCreatedResponse({ type: AnuncioDto })
-  create(@Body() createAnuncioDto: CreateAnuncioDto) {
-    return this.anunciosService.create(createAnuncioDto);
+  create(@Body() createAnuncioDto: CreateAnuncioDto, @CurrentUser() user: User) {
+    return this.anunciosService.create(createAnuncioDto, user);
   }
 
   @Get()

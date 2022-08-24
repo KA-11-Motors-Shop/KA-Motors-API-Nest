@@ -5,8 +5,10 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { Imagem } from '../../imagens/entities/imagen.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Anuncio {
@@ -47,6 +49,11 @@ export class Anuncio {
   })
   updatedAt: Date;
 
+  @ManyToOne(() => User, (seller) => seller.anuncios)
+  seller: User;
+
+  // @ManyToOne((type) => Anuncio, (anuncio) => anuncio.imagens)
+  // anuncio: Anuncio;
   @OneToMany(() => Imagem, (imagem) => imagem.anuncio, { eager: true })
   imagens: Imagem[];
 }

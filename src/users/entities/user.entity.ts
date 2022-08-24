@@ -4,7 +4,9 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
+import { Anuncio } from '../../anuncios/entities/anuncio.entity';
 import { Endereco } from '../../enderecos/entities/endereco.entity';
 @Entity()
 export class User {
@@ -35,7 +37,13 @@ export class User {
   @Column()
   descricao: string;
 
-  @OneToOne(() => Endereco, {onDelete: "CASCADE"})
+  @OneToMany(() => Anuncio, (anuncio) => anuncio.seller, { eager: true })
+  anuncios: Anuncio[];
+
+  // @OneToMany(() => Imagem, (imagem) => imagem.anuncio, { eager: true })
+  // imagens: Imagem[];
+
+  @OneToOne(() => Endereco, { onDelete: 'CASCADE' })
   @JoinColumn()
   endereco: Endereco;
 }

@@ -16,6 +16,7 @@ describe('anuncios (e2e)', () => {
   });
 
   it('/anuncios (GET)', () => {
+    
     return request(app.getHttpServer())
       .get('/anuncios')
       .expect(200)

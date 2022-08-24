@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  Session,
   Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -31,15 +32,17 @@ export class UsersController {
   @Post('/signup')
   @Serializer(UserDto)
   @ApiCreatedResponse({ type: UserDto })
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto, @Session() session: any) {
     const user = await this.authService.signup(createUserDto);
+    session.userId = user.id;
     return user;
   }
 
   @Post('/signin')
   @ApiOkResponse({ type: UserDto })
-  async signinUser(@Body() body: SigninUserDto) {
+  async signinUser(@Body() body: SigninUserDto, @Session() session: any) {
     const user = await this.authService.signin(body);
+    session.userId = user.id;
     return user;
   }
 
