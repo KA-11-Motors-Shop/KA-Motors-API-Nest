@@ -1,16 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AnunciosController } from './anuncios.controller';
 import { AnunciosService } from './anuncios.service';
-
+import { User } from '../users/entities/user.entity';
 
 describe('AnunciosController', () => {
   let anuncios = [];
   let controller: AnunciosController;
   const mockAnuncioService = {
-    create: jest.fn((dto) => {
+    create: jest.fn((dto, user) => {
       const createdAnuncio = {
         ...dto,
         id: 1,
+        sellerId: user.id
       };
       anuncios.push(createdAnuncio);
       return anuncios[0];
@@ -35,6 +36,9 @@ describe('AnunciosController', () => {
       'https://www.japimportsuk.com/wp-content/uploads/2016/08/DSC0156.jpg',
     ],
   };
+  const user = {
+    id: '1',
+  } as User;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -53,7 +57,7 @@ describe('AnunciosController', () => {
   });
 
   it('should create a anuncio', () => {
-    expect(controller.create(anuncio)).toEqual(anuncios[0]);
+    expect(controller.create(anuncio, user)).toEqual(anuncios[0]);
   });
 
   it('should return all anuncios', () => {

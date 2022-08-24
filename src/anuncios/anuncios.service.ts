@@ -17,8 +17,7 @@ export class AnunciosService {
     const photos = createAnuncioDto.photos;
     delete createAnuncioDto.photos;
     const anuncio = this.anuncioRepo.create(createAnuncioDto);
-
-    console.log(user)
+ 
 
     let anuncioPhotos: Imagem[] = [];
     if (photos.length > 1) {

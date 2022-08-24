@@ -3,6 +3,7 @@ import { AnunciosService } from './anuncios.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Anuncio } from './entities/anuncio.entity';
 import { Imagem } from '../imagens/entities/imagen.entity';
+import { User } from '../users/entities/user.entity';
 
 const mockAnuncioRepository = {
   create: jest.fn().mockImplementation((dto) => dto),
@@ -15,6 +16,29 @@ const mockAnuncioRepository = {
     }),
   ),
 };
+
+const mockUserRepository = {};
+
+const user = {
+  id: '839816ad-c37c-4fe0-924b-a4ceb9842709',
+  nome: 'teste do mengao',
+  email: 'mail221@mail.com',
+  celular: '12125562228',
+  dataNascimento: new Date('1994-04-23'),
+  senha: '$2a$10$SjqAVhUnuB4bpca/9eggiOa11oo3DvwZEPk.CC8Ea8My07I1RpUi2',
+  tipo: 'anunciante',
+  cpf: '44775922164243',
+  descricao: 'vendedor humilde',
+  anuncios: [],
+  endereco: {
+    complemento: 'f',
+    cep: '12214-121',
+    estado: 'SP',
+    rua: 'rua das palmeiras',
+    numero: 23,
+    cidade: 'pinda',
+  },
+} as User;
 
 const mockImagemRepository = {
   create: jest.fn().mockImplementation((dto) => {
@@ -60,6 +84,7 @@ const response = {
   id: '1',
   createdAt: '2022-08-15T22:07:22.658Z',
   updatedAt: '2022-08-15T22:07:22.658Z',
+  seller: user
 };
 describe('AnunciosService', () => {
   let service: AnunciosService;
@@ -76,6 +101,10 @@ describe('AnunciosService', () => {
           provide: getRepositoryToken(Imagem),
           useValue: mockImagemRepository,
         },
+        {
+          provide: getRepositoryToken(User),
+          useValue: mockUserRepository,
+        },
       ],
     }).compile();
 
@@ -87,6 +116,6 @@ describe('AnunciosService', () => {
   });
 
   it('should create a anuncio', async () => {
-    expect(await service.create(request)).toEqual(response);
+    expect(await service.create(request, user)).toEqual(response);
   });
 });
